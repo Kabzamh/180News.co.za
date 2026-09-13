@@ -1271,6 +1271,109 @@ The Sona is on Thursday evening. The newsroom’s live blog opens at 19:00 on 18
     views: 3100,
     readingMinutes: 3,
   },
+  {
+    title: "Johannesburg settles R5.26bn overdue Eskom account, ending supply threat",
+    slug: "johannesburg-settles-r5-26bn-eskom-account",
+    excerpt:
+      "City Power made the final payment on 21 August, Eskom said, ending a dispute that had raised concern about electricity supply to South Africa’s biggest metro.",
+    content: `JOHANNESBURG — The City of Johannesburg has paid the R5.26 billion overdue electricity account at the centre of its dispute with Eskom, according to an Eskom statement reported on 21 August 2026.
+
+City Power, the municipal distributor, made the final payment on Friday. The settlement removes the immediate threat of supply interruptions that had worried residents and businesses, but does not close the wider municipal-debt problem.
+
+Municipalities collectively owe Eskom about R119 billion, according to reporting on the settlement. The utility has warned that arrears undermine its financial recovery and the restructuring of the electricity industry.
+
+For Johannesburg, the next test is whether current accounts are paid on time while the metro funds maintenance of an ageing local network.
+
+Source: Eskom statement, reported by Bloomberg and The South African, 21–24 August 2026.`,
+    imageUrl:
+      "https://images.pexels.com/photos/33622126/pexels-photo-33622126.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "Johannesburg skyline and Hillbrow Tower",
+    category: "provincial",
+    author: "lebo-nkosi",
+    province: "gauteng",
+    scope: "provincial" as const,
+    isBreaking: true,
+    isFeatured: true,
+    hoursAgo: 1,
+    views: 9100,
+    readingMinutes: 4,
+  },
+  {
+    title: "SA miners accelerate renewable power deals to cut Eskom costs",
+    slug: "sa-miners-renewable-power-deals-eskom-costs",
+    excerpt:
+      "Anglo American, Sibanye-Stillwater and Exxaro are expanding wind, solar and battery supply as executives target savings of 20% to 30% against forecast Eskom tariffs.",
+    content: `JOHANNESBURG — South African mining groups are accelerating renewable-energy investment to lower costs, reduce emissions and diversify away from exclusive dependence on Eskom, Reuters reported on 26 August 2026.
+
+Sibanye-Stillwater has contracted 835 MW of renewable capacity, of which 164 MW is operating. The group expects renewables to supply about 64% of the energy used at its South African operations by the end of 2028.
+
+Chief executive Richard Stewart said renewable power is expected to cost 20% to 30% less than forecast Eskom tariffs. He stressed that Eskom baseload will remain essential because wind and solar are intermittent and battery storage is still developing.
+
+Exxaro said a 68 MW solar plant at Grootegeluk had cut the coal mine’s grid reliance by 30%, saving about R100 million a year.
+
+Source: Reuters, published by CNBC Africa and Mining Weekly, 26 August 2026.`,
+    imageUrl:
+      "https://images.pexels.com/photos/10680060/pexels-photo-10680060.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "Renewable wind generation under a clear sky",
+    category: "business",
+    author: "ayesha-patel",
+    scope: "national" as const,
+    isBreaking: false,
+    hoursAgo: 2,
+    views: 7600,
+    readingMinutes: 4,
+  },
+  {
+    title: "Ramaphosa takes SADC chair with regional industry and resilience pledge",
+    slug: "ramaphosa-takes-sadc-chair-regional-industry",
+    excerpt:
+      "South Africa assumed the SADC chair in August as the regional bloc also strengthened early-warning commitments and prepared a drier 2026/27 rainfall outlook.",
+    content: `JOHANNESBURG — President Cyril Ramaphosa assumed the chair of the Southern African Development Community in August 2026, pledging to push regional integration, industrial development and resilience.
+
+The handover follows South Africa’s year as deputy chair of the SADC Troika. In the days after the summit, the regional secretariat published new commitments on climate preparedness, early warning and action.
+
+SADC’s climate outlook also favours drier conditions across much of Southern Africa during the 2026/27 rainy season, raising risks for agriculture, water planning and hydropower.
+
+The South African chair will be judged on whether summit language turns into practical movement on trade corridors, electricity markets and cross-border disaster response.
+
+Source: SADC Secretariat releases dated 18–28 August 2026.`,
+    imageUrl:
+      "https://images.pexels.com/photos/15965251/pexels-photo-15965251.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "National flags representing regional diplomacy",
+    category: "international",
+    author: "james-van-der-merwe",
+    scope: "international" as const,
+    isBreaking: false,
+    hoursAgo: 3,
+    views: 6200,
+    readingMinutes: 4,
+  },
+  {
+    title: "Springboks head to Cape Town after All Blacks opener at Ellis Park",
+    slug: "springboks-all-blacks-cape-town-second-test",
+    excerpt:
+      "The rivalry series moves to DHL Stadium after the Johannesburg opener, with South Africa managing injury changes and chasing a response in the second Test.",
+    content: `CAPE TOWN — The Springboks’ four-Test rivalry series with New Zealand moves from Ellis Park to DHL Stadium in Cape Town for the second meeting on 29 August 2026.
+
+South Africa entered the Cape Town week managing injury-enforced backline changes. Published team updates said Handré Pollard was ruled out and Cheslin Kolbe was brought into the match-day group.
+
+The fixture is the second of four meetings in the series, followed by a match at FNB Stadium in Johannesburg on 5 September and a fourth Test on 12 September.
+
+The rugby desk will carry the verified match-day 23, late injury changes and result on the live bulletin.
+
+Sources: SA Rugby fixture list and published Springbok team updates, 20–28 August 2026.`,
+    imageUrl:
+      "https://images.pexels.com/photos/30651230/pexels-photo-30651230.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "A brightly lit stadium filled with spectators",
+    category: "sport",
+    author: "nomsa-khumalo",
+    province: "western-cape",
+    scope: "national" as const,
+    isBreaking: false,
+    hoursAgo: 4,
+    views: 8400,
+    readingMinutes: 3,
+  },
 ];
 
 let deskRefreshed = false;
