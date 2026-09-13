@@ -1,0 +1,84 @@
+@import "tailwindcss";
+
+@theme {
+  --font-serif: var(--font-playfair), "Playfair Display", Georgia, serif;
+  --font-sans: var(--font-source), "Source Sans 3", "Segoe UI", sans-serif;
+  --color-news-red: #8f1520;
+  --color-news-blue: #0b2f8a;
+  --color-news-navy: #081226;
+}
+
+:root {
+  --news-red: #8f1520;
+  --news-red-deep: #6d0f18;
+  --news-blue: #0b2f8a;
+  --news-navy: #081226;
+  --news-ink: #14171f;
+  --news-paper: #f4f0e8;
+  --news-muted: #5d6472;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-bottom: 7.5rem;
+  }
+}
+
+body {
+  background: var(--news-paper);
+  color: var(--news-ink);
+  font-family: var(--font-sans), "Source Sans 3", "Segoe UI", sans-serif;
+}
+
+.font-serif,
+h1,
+h2,
+h3 {
+  font-family: var(--font-serif), "Playfair Display", Georgia, serif;
+}
+
+::selection {
+  background: #8f1520;
+  color: white;
+}
+
+.ticker-track {
+  animation: ticker 38s linear infinite;
+}
+
+@keyframes ticker {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.paper-grid {
+  background-image:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0.55)),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 119px,
+      rgba(15, 23, 42, 0.035) 119px,
+      rgba(15, 23, 42, 0.035) 120px
+    );
+}
