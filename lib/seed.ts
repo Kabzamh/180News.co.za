@@ -1005,6 +1005,272 @@ Readers can follow the running order at 180news.co.za/elections and share a ward
     views: 3100,
     readingMinutes: 3,
   },
+  {
+    title: "Treasury clears a 2% above-inflation wage ceiling for the public service",
+    slug: "treasury-public-service-wage-ceiling-2-percent",
+    excerpt:
+      "National Treasury has signed off a framework that allows departments to negotiate above-inflation increases within a 2% ceiling. Teacher unions want more, the Hawks want less.",
+    content: `PRETORIA — National Treasury has set a 2% above-inflation ceiling for public-service wage talks, a move that gives departments room to negotiate but stops the kind of runaway settlements that blew the 2022 budget.
+
+Treasury officials briefed Parliament’s finance committee on Friday. They said the framework protects frontline posts in health, education and policing, and will not be used to fund senior management payouts.
+
+Public-sector unions responded with caution. “Two per cent above inflation is the floor, not the ceiling,” said a teacher federation spokesperson. “The cost of living in Johannesburg, Mthatha and Upingta is not an average.”
+
+Treasury counters that any settlement above the line must come with funded savings and a clean audit. Anything more has to go to Cabinet.
+
+Follow 180news.co.za for the full breakdown once the committee publishes its report.`,
+    imageUrl:
+      "https://images.pexels.com/photos/3183186/pexels-photo-3183186.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "A government meeting at a long table",
+    category: "politics",
+    author: "thandiwe-mokoena",
+    scope: "national" as const,
+    isBreaking: true,
+    hoursAgo: 4,
+    views: 5400,
+    readingMinutes: 4,
+  },
+  {
+    title: "Eskom winter plan: Kusile returns to full service, peaking risk downgraded",
+    slug: "eskom-winter-plan-kusile-returns",
+    excerpt:
+      "Unit 6 of Kusile is back online, lifting the contingency fleet to 2 000 MW. The system operator says a cold week is still a risk, not a forecast.",
+    content: `JOHANNESBURG — Eskom’s winter plan looks lighter after Unit 6 of Kusile returned to full service this week, ending more than a year of running on five units instead of six.
+
+Generation availability has lifted enough to put the contingency fleet at around 2 000 MW, and the system operator has downgraded its worst-case risk to a cold week combined with a unit trip.
+
+“Winter is not over,” said a generation spokesperson. “May still carries the biggest risk of an evening peak with cold morning load.”
+
+Eskom’s diesel budget has been increased by 1.8%. Private producers continue to run their peaking plants overnight. The newsroom’s market strip is updated through the day at 180news.co.za/fuel.`,
+    imageUrl:
+      "https://images.pexels.com/photos/2226111/pexels-photo-2226111.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "High-voltage electricity pylons against an overcast sky",
+    category: "national",
+    author: "ayesha-patel",
+    scope: "national" as const,
+    isBreaking: false,
+    hoursAgo: 6,
+    views: 4200,
+    readingMinutes: 3,
+  },
+  {
+    title: "Rand at R18.40 as metals rally and US jobs data surprises",
+    slug: "rand-r18-40-metals-jobs-data",
+    excerpt:
+      "Stronger platinum and gold exports plus a softer dollar pushed the rand to its firmest level this month. Traders are watching Friday’s mining production data.",
+    content: `JOHANNESBURG — The rand held near R18.40 to the dollar on Friday after stronger-than-expected US jobs data and a rally in precious and base metals.
+
+Traders said the local currency has scope to test R18.30 if the official mining production data for July, due at 11:30, comes in line with private estimates of a 4% year-on-year rise.
+
+“The metals trade is doing the work for the moment,” said a Randburg-based dealer. “Politics is on mute until the GNU budget tabling.”
+
+The JSE’s all-share index closed 0.7% higher, led by platinum and gold counters. Banking stocks closed mixed as bond yields edged down.`,
+    imageUrl:
+      "https://images.pexels.com/photos/16057965/pexels-photo-16057965.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "South African bank notes and coins",
+    category: "business",
+    author: "ayesha-patel",
+    scope: "national" as const,
+    isBreaking: false,
+    hoursAgo: 8,
+    views: 3700,
+    readingMinutes: 3,
+  },
+  {
+    title: "Springbok team announcement: injured Du Toit returns for Rugby Championship",
+    slug: "springbok-team-announcement-du-toit",
+    excerpt:
+      "Coach Rassie Erasmus names a 36-man squad on Saturday with Pieter-Steph du Toit back from injury. Several Stormers youngsters are in line for first caps.",
+    content: `CAPE TOWN — Springbok coach Rassie Erasmus will name a 36-man squad on Saturday for the Rugby Championship, with Pieter-Steph du Toit set to return from a knee injury.
+
+Erasmus said Du Toit, 31, has been training at full contact for two weeks and will be on the flight to Argentina. Two uncapped Stormers forwards are also in line.
+
+The announcement comes the same week as the announcement of the opening fixture against the Pumas on 6 September at Ellis Park.
+
+Read more on 180news.co.za and watch the live stream at 13:00.`,
+    imageUrl:
+      "https://images.pexels.com/photos/19863728/pexels-photo-19863728.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "Players training on a rugby field",
+    category: "sport",
+    author: "nomsa-khumalo",
+    scope: "national" as const,
+    isBreaking: false,
+    hoursAgo: 9,
+    views: 5100,
+    readingMinutes: 3,
+  },
+  {
+    title: "Cape Town mayor tables R6.5 billion water resilience plan",
+    slug: "cape-town-water-resilience-plan-6-5-billion",
+    excerpt:
+      "The plan funds three new desalination plants, river reuse schemes and household retrofitting. Construction starts in November if Council approves the borrowing.",
+    content: `CAPE TOWN — Mayor Geordin Hill-Lewis has tabled a R6.5 billion water resilience plan, anchored on three new modular desalination plants on the west coast and a river-reuse programme for the Diep and Liesbeek systems.
+
+The plan funds 250 000 household leak retrofits in Khayelitsha, Gugulethu and Philippi. It also sets aside R900 million for groundwater extraction in the Atlantis and Table Mountain Group aquifers.
+
+Council will vote on the borrowing next month. Construction on the first desalination plant is expected to start in November, with the first water flowing by August next year.`,
+    imageUrl:
+      "https://images.pexels.com/photos/2995194/pexels-photo-2995194.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "Cape Town coastline at Table Mountain",
+    category: "provincial",
+    author: "lebo-nkosi",
+    province: "western-cape",
+    scope: "provincial" as const,
+    isBreaking: false,
+    hoursAgo: 11,
+    views: 2900,
+    readingMinutes: 4,
+  },
+  {
+    title: "Stage 2 returns: Eskom schedules load shedding from 16:00 to 22:00",
+    slug: "stage-2-load-shedding-16-00-22-00",
+    excerpt:
+      "Eskom cites unplanned unit trips at two stations. Households should check the schedule for their block before evening peak.",
+    content: `JOHANNESBURG — Eskom will implement Stage 2 load shedding from 16:00 to 22:00 on Friday after unplanned trips at two power stations.
+
+The system operator said the loss of two units in Mpumalanga pushed the reserve margin below 2 000 MW. Households can find their block on 180news.co.za/loadshedding and EskomSePush.
+
+Stage 2 means 2 000 MW is shed across the country. Industrial customers on curtailment contracts are asked to cut by the agreed amounts.`,
+    imageUrl:
+      "https://images.pexels.com/photos/30528275/pexels-photo-30528275.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "Lightning over the Johannesburg skyline at night",
+    category: "national",
+    author: "lebo-nkosi",
+    province: "gauteng",
+    scope: "national" as const,
+    isBreaking: true,
+    hoursAgo: 12,
+    views: 8800,
+    readingMinutes: 3,
+  },
+  {
+    title: "Daily Lotto: tonight’s jackpot is R10 million after no winners",
+    slug: "daily-lotto-jackpot-10-million",
+    excerpt:
+      "No ticket matched all five numbers in Wednesday’s draw. Sales close 20:30 SAST; the newsroom desk tracks the numbers live at 180news.co.za/lotto.",
+    content: `JOHANNESBURG — The Daily Lotto jackpot rolls to R10 million on Thursday night after no ticket matched all five numbers in Wednesday’s draw. The winning numbers were 4, 17, 21, 25 and 30.
+
+Sales close at 20:30 SAST. The full payout and winners list will be on 180news.co.za/lotto from 21:00.
+
+The Lottery says the next PowerBall draw is on Friday, with a R45 million jackpot after three rollovers.`,
+    imageUrl:
+      "https://images.pexels.com/photos/3279696/pexels-photo-3279696.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "Numbered lottery balls in a drum",
+    category: "national",
+    author: "thandiwe-mokoena",
+    scope: "national" as const,
+    isBreaking: false,
+    hoursAgo: 14,
+    views: 4400,
+    readingMinutes: 2,
+  },
+  {
+    title: "SA hosts the Africa Energy Forum: grid reform and clean baseload on the agenda",
+    slug: "sa-hosts-africa-energy-forum",
+    excerpt:
+      "The four-day conference opens in Sandton with 30 ministers and 70 utilities. Eskom, the regulator and the IPP office are expected to publish a unified grid plan.",
+    content: `JOHANNESBURG — South Africa hosts the Africa Energy Forum from Tuesday at the Sandton Convention Centre, with 30 energy ministers and more than 70 utilities on the delegate list.
+
+Eskom, the National Energy Regulator and the Independent Power Producer office are expected to publish a single, unified grid plan for the rest of the decade.
+
+The conference is private, but the energy department said it would host two open technical sessions. The newsroom will file daily briefings at 180news.co.za/elections and on the energy beat.`,
+    imageUrl:
+      "https://images.pexels.com/photos/10680060/pexels-photo-10680060.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "A wind turbine on a sunny day",
+    category: "international",
+    author: "james-van-der-merwe",
+    scope: "international" as const,
+    isBreaking: false,
+    hoursAgo: 18,
+    views: 2100,
+    readingMinutes: 3,
+  },
+  {
+    title: "Western Cape Education signs new language policy after parent pushback",
+    slug: "western-cape-education-language-policy",
+    excerpt:
+      "A three-language plan is back on the table, with Afrikaans and English in all schools and isiXhosa from grade 4. The department will publish the draft for comment on Monday.",
+    content: `CAPE TOWN — The Western Cape Education Department will publish a draft three-language policy on Monday, after a year of consultation with parents, civil society and the national department.
+
+Under the plan, all schools will offer English and Afrikaans from grade R. IsiXhosa becomes a third language from grade 4 in 80% of schools by 2030.
+
+Education MEC David Maynier said the policy is the “most-tested in the country”. It will be open for public comment for 60 days.`,
+    imageUrl:
+      "https://images.pexels.com/photos/2563958/pexels-photo-2563958.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "A learner writing at a desk in a classroom",
+    category: "provincial",
+    author: "lebo-nkosi",
+    province: "western-cape",
+    scope: "provincial" as const,
+    isBreaking: false,
+    hoursAgo: 22,
+    views: 2300,
+    readingMinutes: 3,
+  },
+  {
+    title: "KZN Premier reshuffles cabinet, hands transport to ANC rival",
+    slug: "kzn-premier-reshuffles-cabinet",
+    excerpt:
+      "Premier Nomusa Dube-Ncube moves the transport portfolio to a familiar rival, two weeks before the by-election in uMhlathuze. The DA says the move is factional.",
+    content: `DURBAN — KwaZulu-Natal Premier Nomusa Dube-Ncube reshuffled her cabinet on Thursday, moving transport to a familiar ANC rival two weeks before the uMhlathuze by-election.
+
+The DA said the reshuffle is “a clear factional manoeuvre” and announced it would challenge the appointment. The ANC’s provincial executive committee backed the move.
+
+The newsroom’s political desk has the full list of changes on 180news.co.za.`,
+    imageUrl:
+      "https://images.pexels.com/photos/3011212/pexels-photo-3011212.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "A meeting room in a provincial government building",
+    category: "provincial",
+    author: "sipho-dlamini",
+    province: "kwazulu-natal",
+    scope: "provincial" as const,
+    isBreaking: true,
+    hoursAgo: 26,
+    views: 4800,
+    readingMinutes: 3,
+  },
+  {
+    title: "Two-pot retirement system: withdrawals pass R1.5 billion in week one",
+    slug: "two-pot-retirement-withdrawals-1-5-billion",
+    excerpt:
+      "The FSCA says 1.1 million South Africans tapped their savings in the first seven days. The Treasury is watching tax flows closely.",
+    content: `JOHANNESBURG — The Financial Sector Conduct Authority said 1.1 million South Africans had applied to withdraw from their two-pot retirement savings by Friday, totalling more than R1.5 billion.
+
+The Treasury said the take-up was “in line with expectations” and that it would publish weekly data on tax flows and net household consumption.
+
+The average withdrawal is just under R1 400. Two of the country’s four largest retirement funds said the most common request was a “single small amount, not a structural move”.`,
+    imageUrl:
+      "https://images.pexels.com/photos/259200/pexels-photo-259200.jpeg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "Coins stacked on a desk",
+    category: "business",
+    author: "ayesha-patel",
+    scope: "national" as const,
+    isBreaking: false,
+    hoursAgo: 30,
+    views: 6800,
+    readingMinutes: 4,
+  },
+  {
+    title: "Sona dress rehearsal: opposition parties demand a clear GNU plan",
+    slug: "sona-dress-rehearsal-opposition",
+    excerpt:
+      "EFF, MK and ActionSA all want President Ramaphosa to commit to a written coalition pact. The Presidency is sticking to oral commitments.",
+    content: `CAPE TOWN — Opposition parties are using the dress rehearsal for the State of the Nation Address to demand that President Cyril Ramaphosa table a written coalition pact in Parliament.
+
+EFF, MK Party and ActionSA said oral commitments have repeatedly failed. The Presidency told the newsroom it will not commit to a written pact ahead of the address.
+
+The Sona is on Thursday evening. The newsroom’s live blog opens at 19:00 on 180news.co.za.`,
+    imageUrl:
+      "https://images.pexels.com/photos/7597/pexels-photo.jpg?auto=compress&cs=tinysrgb&w=1600",
+    imageAlt: "The South African Parliament building",
+    category: "politics",
+    author: "thandiwe-mokoena",
+    scope: "national" as const,
+    isBreaking: false,
+    hoursAgo: 36,
+    views: 3100,
+    readingMinutes: 3,
+  },
 ];
 
 let deskRefreshed = false;
