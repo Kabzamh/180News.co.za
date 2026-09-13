@@ -1,7 +1,0 @@
-{
-  "buildCommand": "npx next build",
-  "devCommand": "npx next dev",
-  "installCommand": "npm install --no-audit --no-fund",
-  "framework": "nextjs",
-  "regions": ["cpt1"]
-}
