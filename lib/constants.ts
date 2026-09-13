@@ -1,0 +1,90 @@
+export const SITE = {
+  name: "180 Degrees News",
+  shortName: "180° NEWS",
+  domain: "180news.co.za",
+  url: "https://180news.co.za",
+  tagline: "Current news and affairs from every angle.",
+  description:
+    "180 Degrees News is a Johannesburg-based online news bulletin covering national, provincial and international current affairs.",
+  city: "Johannesburg",
+  addressLines: [
+    "Sandton Gate, 11 Alice Lane",
+    "Sandton, Johannesburg, 2196",
+    "Gauteng, South Africa",
+  ],
+  phone: "+27 11 555 0180",
+  email: "newsroom@180news.co.za",
+  tipsEmail: "tips@180news.co.za",
+};
+
+export const SOCIAL_LINKS = [
+  { name: "Facebook", href: "https://www.facebook.com/180DegreesNews", handle: "@180DegreesNews" },
+  { name: "X", href: "https://x.com/180news", handle: "@180news" },
+  { name: "Instagram", href: "https://www.instagram.com/180news", handle: "@180news" },
+  { name: "YouTube", href: "https://www.youtube.com/@180DegreesNews", handle: "@180DegreesNews" },
+  { name: "TikTok", href: "https://www.tiktok.com/@180news", handle: "@180news" },
+  { name: "WhatsApp", href: "https://whatsapp.com/channel/180news", handle: "180° channel" },
+  { name: "LinkedIn", href: "https://www.linkedin.com/company/180-degrees-news", handle: "180 Degrees News" },
+];
+
+export const MONTHLY_PLAN = {
+  id: "monthly",
+  name: "Digital Bulletin",
+  amountCents: 9900,
+  currency: "ZAR",
+  label: "R99 / month",
+  periodDays: 30,
+  trialDays: 7,
+  perks: [
+    "7-day free trial when you register",
+    "Full articles, not teasers",
+    "Video and MP3 on subscriber stories",
+    "Comments on the newsroom desk",
+    "Then R99 a month · cancel anytime",
+  ],
+};
+
+export const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/category/national", label: "National" },
+  { href: "/category/provincial", label: "Provincial" },
+  { href: "/category/international", label: "International" },
+  { href: "/category/politics", label: "Politics" },
+  { href: "/elections", label: "IEC Results" },
+  { href: "/weather", label: "Weather" },
+  { href: "/map", label: "Map" },
+  { href: "/lotto", label: "Lotto" },
+  { href: "/loadshedding", label: "Loadshedding" },
+  { href: "/quiz", label: "Quiz" },
+  { href: "/fuel", label: "Fuel" },
+  { href: "/horoscope", label: "Stars" },
+  { href: "/category/business", label: "Business" },
+  { href: "/category/sport", label: "Sport" },
+  { href: "/bulletin", label: "Bulletin" },
+];
+
+export const FOOTER_LINKS = [
+  { href: "/about", label: "About the newsroom" },
+  { href: "/contact", label: "Contact" },
+  { href: "/authors", label: "Our journalists" },
+  { href: "/bulletin", label: "Live bulletin" },
+  { href: "/elections", label: "IEC live results" },
+  { href: "/weather", label: "City weather" },
+  { href: "/map", label: "SA map" },
+  { href: "/lotto", label: "Lotto results" },
+  { href: "/loadshedding", label: "Load shedding" },
+  { href: "/quiz", label: "News quiz" },
+  { href: "/fuel", label: "Fuel prices" },
+  { href: "/horoscope", label: "Horoscope" },
+  { href: "/holidays", label: "Public holidays" },
+  { href: "/rss", label: "RSS feeds" },
+  { href: "/search", label: "Search" },
+  { href: "/advertise", label: "Advertise" },
+  { href: "/subscribe", label: "Subscribe" },
+  { href: "/signin", label: "Sign in" },
+  { href: "/account", label: "My profile" },
+  { href: "/pins", label: "Pinned stories" },
+  { href: "/privacy", label: "Privacy" },
+  { href: "/terms", label: "Terms" },
+  { href: "/popia", label: "POPIA" },
+];
