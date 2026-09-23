@@ -1,89 +1,82 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-export function NewsletterForm({
+export default function NewsletterForm({
   variant = "light",
-  unlockCopy = false,
-  onUnlocked,
 }: {
   variant?: "light" | "dark";
-  unlockCopy?: boolean;
-  onUnlocked?: () => void;
 }) {
-  const router = useRouter();
   const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [state, setState] = useState<"idle" | "loading" | "done" | "error">("idle");
   const [message, setMessage] = useState("");
 
-  async function onSubmit(event: FormEvent) {
-    event.preventDefault();
-    setStatus("loading");
-    setMessage("");
+  async function submit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      setState("error");
+      setMessage("Please enter a valid email address.");
+      return;
+    }
+    setState("loading");
     try {
-      const response = await fetch("/api/newsletter", {
+      const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, name }),
+        body: JSON.stringify({ email }),
       });
-      const data = (await response.json()) as { ok: boolean; error?: string };
-      if (!response.ok || !data.ok) {
-        throw new Error(data.error || "Could not subscribe.");
+      const data = await res.json();
+      if (data.ok) {
+        setState("done");
+        setMessage(
+          data.status === "exists"
+            ? "You're already subscribed — thank you!"
+            : "Welcome to the 180° family! Check your inbox.",
+        );
+        setEmail("");
+      } else {
+        throw new Error(data.error || "Failed");
       }
-      setStatus("success");
-      setMessage("You are on the 180° email list. Register for a 7-day trial to unlock full stories.");
-      setEmail("");
-      setName("");
-      onUnlocked?.();
-      router.refresh();
-    } catch (error) {
-      setStatus("error");
-      setMessage(error instanceof Error ? error.message : "Could not subscribe.");
+    } catch {
+      setState("error");
+      setMessage("Something went wrong. Please try again.");
     }
   }
 
-  const dark = variant === "dark";
+  const inputCls =
+    variant === "dark"
+      ? "border-white/20 bg-white/10 text-white placeholder:text-white/60"
+      : "border-slate-300 bg-white text-ink placeholder:text-slate-400";
 
   return (
-    <form onSubmit={onSubmit} className="space-y-3">
-      <div className="grid gap-3 sm:grid-cols-2">
-        <input
-          value={name}
-          onChange={(event) => setName(event.target.value)}
-          placeholder="Name"
-          className={`border px-3 py-2 text-sm outline-none ${
-            dark
-              ? "border-white/20 bg-white/5 text-white placeholder:text-white/50"
-              : "border-slate-300 bg-white"
-          }`}
-        />
+    <form onSubmit={submit} className="w-full">
+      <div className="flex flex-col gap-2 sm:flex-row">
         <input
           type="email"
-          required
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
-          placeholder="Email address"
-          className={`border px-3 py-2 text-sm outline-none ${
-            dark
-              ? "border-white/20 bg-white/5 text-white placeholder:text-white/50"
-              : "border-slate-300 bg-white"
-          }`}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="you@example.co.za"
+          className={`w-full flex-1 rounded-sm border px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-brand-gold ${inputCls}`}
+          aria-label="Email address"
         />
+        <button
+          type="submit"
+          disabled={state === "loading"}
+          className="shrink-0 rounded-sm bg-brand-gold px-5 py-2.5 text-sm font-black uppercase tracking-wide text-brand-navy-dark transition hover:brightness-105 disabled:opacity-60"
+        >
+          {state === "loading" ? "Signing up…" : "Sign up — free"}
+        </button>
       </div>
-      <button
-        type="submit"
-        disabled={status === "loading"}
-        className="bg-[#8f1520] px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white hover:bg-[#6d0f18] disabled:opacity-60"
-      >
-        {status === "loading" ? "Sending..." : unlockCopy ? "Subscribe and read on" : "Subscribe"}
-      </button>
-      {message ? (
-        <p className={`text-sm ${status === "error" ? "text-red-300" : dark ? "text-emerald-200" : "text-emerald-700"}`}>
+      {message && (
+        <p
+          className={`mt-2 text-xs font-medium ${
+            state === "error" ? "text-red-300" : "text-emerald-300"
+          }`}
+          role="status"
+        >
           {message}
         </p>
-      ) : null}
+      )}
     </form>
   );
 }

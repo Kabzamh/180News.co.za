@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en-ZA">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>You're offline — 180° News</title>
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <style>
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; min-height: 100vh; display: grid; place-items: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        background: linear-gradient(135deg, #1e1b4b, #0c1870); color: #fff;
+        text-align: center; padding: 24px;
+      }
+      .card { max-width: 380px; }
+      img { width: 88px; height: 88px; border-radius: 20px; }
+      h1 { font-size: 22px; margin: 16px 0 8px; }
+      p { color: rgba(255,255,255,.82); font-size: 14px; line-height: 1.55; }
+      button {
+        margin-top: 20px; background: #fcd34d; color: #1e1b4b; border: 0;
+        padding: 12px 26px; border-radius: 6px; font-weight: 800;
+        text-transform: uppercase; letter-spacing: .08em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img src="/icons/icon-192.png" alt="180° News" />
+      <h1>You're offline</h1>
+      <p>
+        The latest news needs a connection. Reconnect to load the Live Wire —
+        previously opened stories and images are still cached on this device.
+      </p>
+      <button onclick="location.reload()">Try again</button>
+    </div>
+  </body>
+</html>

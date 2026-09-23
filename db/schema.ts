@@ -1,334 +1,217 @@
-import { relations } from "drizzle-orm";
+import { sql } from "drizzle-orm";
 import {
   boolean,
   integer,
+  jsonb,
+  numeric,
   pgTable,
   serial,
   text,
   timestamp,
-  varchar,
+  unique,
 } from "drizzle-orm/pg-core";
 
-export const authors = pgTable("authors", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 160 }).notNull(),
-  slug: varchar("slug", { length: 180 }).notNull().unique(),
-  title: varchar("title", { length: 160 }).notNull(),
-  bio: text("bio").notNull(),
-  avatarInitials: varchar("avatar_initials", { length: 4 }).notNull(),
-  email: varchar("email", { length: 180 }).notNull(),
-});
-
-export const categories = pgTable("categories", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 80 }).notNull(),
-  slug: varchar("slug", { length: 80 }).notNull().unique(),
-  description: text("description").notNull(),
-  scope: varchar("scope", { length: 32 }).notNull(),
-});
-
-export const provinces = pgTable("provinces", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 80 }).notNull(),
-  slug: varchar("slug", { length: 80 }).notNull().unique(),
-  capital: varchar("capital", { length: 80 }).notNull(),
-  blurb: text("blurb").notNull(),
-});
-
+/**
+ * 180 Degrees News — database schema
+ * Articles are either produced by the 180 Degrees news desk or ingested
+ * from South African RSS feeds (see rss_sources).
+ */
 export const articles = pgTable("articles", {
   id: serial("id").primaryKey(),
-  title: varchar("title", { length: 280 }).notNull(),
-  slug: varchar("slug", { length: 320 }).notNull().unique(),
-  excerpt: text("excerpt").notNull(),
-  content: text("content").notNull(),
-  imageUrl: text("image_url").notNull(),
-  imageAlt: text("image_alt").notNull(),
-  categoryId: integer("category_id")
+  // Stable unique identifier used for de-duplication (RSS guid / link).
+  guid: text("guid").notNull().unique(),
+  title: text("title").notNull(),
+  slug: text("slug").notNull().unique(),
+  summary: text("summary"),
+  // Plain-text body; paragraphs separated by "\n\n".
+  content: text("content"),
+  imageUrl: text("image_url"),
+  imageCredit: text("image_credit"),
+  source: text("source").notNull().default("180 Degrees News"),
+  sourceUrl: text("source_url"),
+  author: text("author"),
+  // Section slug, e.g. national | politics | business | sport ...
+  category: text("category").notNull().default("national"),
+  // Province slug, e.g. gauteng | western-cape ... (null for non-local news).
+  province: text("province"),
+  // Human-readable region / city / metro, e.g. "City of Cape Town".
+  region: text("region"),
+  tags: text("tags")
+    .array()
     .notNull()
-    .references(() => categories.id),
-  authorId: integer("author_id")
-    .notNull()
-    .references(() => authors.id),
-  provinceId: integer("province_id").references(() => provinces.id),
-  scope: varchar("scope", { length: 32 }).notNull(),
+    .default(sql`'{}'::text[]`),
   isBreaking: boolean("is_breaking").notNull().default(false),
-  isFeatured: boolean("is_featured").notNull().default(false),
-  publishedAt: timestamp("published_at", { withTimezone: true }).notNull(),
+  featured: boolean("featured").notNull().default(false),
+  // Premium (All Access) long-reads show only a teaser to non-subscribers.
+  isPremium: boolean("is_premium").notNull().default(false),
+  // investigation | column | explainer | guide | briefing
+  premiumKind: text("premium_kind"),
+  // Optional lead media attached to the story (YouTube, audio or video).
+  mediaKind: text("media_kind"), // 'youtube' | 'audio' | 'video'
+  mediaId: text("media_id"), // YouTube video id or uploaded file URL
   views: integer("views").notNull().default(0),
-  readingMinutes: integer("reading_minutes").notNull().default(4),
-});
-
-export const articleMedia = pgTable("article_media", {
-  id: serial("id").primaryKey(),
-  articleId: integer("article_id")
+  publishedAt: timestamp("published_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
-    .references(() => articles.id),
-  kind: varchar("kind", { length: 16 }).notNull(),
-  title: varchar("title", { length: 200 }).notNull(),
-  url: text("url").notNull(),
-  caption: text("caption").notNull().default(""),
-  mimeType: varchar("mime_type", { length: 80 }).notNull().default(""),
-  sortOrder: integer("sort_order").notNull().default(0),
-});
-
-export const comments = pgTable("comments", {
-  id: serial("id").primaryKey(),
-  articleId: integer("article_id")
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
     .notNull()
-    .references(() => articles.id),
-  name: varchar("name", { length: 120 }).notNull(),
-  email: varchar("email", { length: 180 }).notNull(),
-  body: text("body").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    .defaultNow(),
 });
 
-export const newsletterSubscribers = pgTable("newsletter_subscribers", {
+export const rssSources = pgTable("rss_sources", {
   id: serial("id").primaryKey(),
-  email: varchar("email", { length: 180 }).notNull().unique(),
-  name: varchar("name", { length: 120 }),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  name: text("name").notNull(),
+  url: text("url").notNull().unique(),
+  category: text("category").notNull().default("national"),
+  province: text("province"),
+  enabled: boolean("enabled").notNull().default(true),
+  lastFetchedAt: timestamp("last_fetched_at", { withTimezone: true }),
+  lastStatus: text("last_status"),
+  itemCount: integer("item_count").notNull().default(0),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });
 
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 160 }).notNull(),
-  email: varchar("email", { length: 180 }).notNull().unique(),
-  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
-  phone: varchar("phone", { length: 40 }).notNull().default(""),
-  city: varchar("city", { length: 80 }).notNull().default("Johannesburg"),
-  province: varchar("province", { length: 80 }).notNull().default("Gauteng"),
-  bio: text("bio").notNull().default(""),
-  avatarInitials: varchar("avatar_initials", { length: 4 }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  email: text("email").notNull().unique(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });
 
-export const pins = pgTable("pins", {
-  id: serial("id").primaryKey(),
-  subscriberId: integer("subscriber_id")
-    .notNull()
-    .references(() => subscribers.id),
-  articleId: integer("article_id")
-    .notNull()
-    .references(() => articles.id),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const subscriberSessions = pgTable("subscriber_sessions", {
-  id: serial("id").primaryKey(),
-  subscriberId: integer("subscriber_id")
-    .notNull()
-    .references(() => subscribers.id),
-  token: varchar("token", { length: 80 }).notNull().unique(),
-  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
-});
-
+/** Paid All Access memberships (checkout is simulated; wire a PSP here). */
 export const subscriptions = pgTable("subscriptions", {
   id: serial("id").primaryKey(),
-  subscriberId: integer("subscriber_id")
-    .notNull()
-    .references(() => subscribers.id),
-  plan: varchar("plan", { length: 40 }).notNull(),
-  status: varchar("status", { length: 20 }).notNull(),
-  amountCents: integer("amount_cents").notNull(),
-  currency: varchar("currency", { length: 8 }).notNull().default("ZAR"),
+  email: text("email").notNull().unique(),
+  fullName: text("full_name"),
+  plan: text("plan").notNull().default("all-access"),
+  // trialing | active | cancelled
+  status: text("status").notNull().default("trialing"),
+  // card | eft | debit
+  paymentMethod: text("payment_method").notNull(),
+  paymentLabel: text("payment_label"),
+  last4: text("last4"),
+  trialEndsAt: timestamp("trial_ends_at", { withTimezone: true }).notNull(),
   currentPeriodEnd: timestamp("current_period_end", { withTimezone: true }).notNull(),
-  autoRenew: boolean("auto_renew").notNull().default(true),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const admins = pgTable("admins", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 160 }).notNull(),
-  email: varchar("email", { length: 180 }).notNull().unique(),
-  passwordHash: varchar("password_hash", { length: 255 }).notNull(),
-  role: varchar("role", { length: 40 }).notNull().default("editor"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const adminSessions = pgTable("admin_sessions", {
-  id: serial("id").primaryKey(),
-  adminId: integer("admin_id")
+  cancelledAt: timestamp("cancelled_at", { withTimezone: true }),
+  accessToken: text("access_token").notNull().unique(),
+  createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
-    .references(() => admins.id),
-  token: varchar("token", { length: 80 }).notNull().unique(),
-  expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
-});
-
-export const payments = pgTable("payments", {
-  id: serial("id").primaryKey(),
-  subscriberId: integer("subscriber_id")
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
     .notNull()
-    .references(() => subscribers.id),
-  reference: varchar("reference", { length: 40 }).notNull().unique(),
-  amountCents: integer("amount_cents").notNull(),
-  method: varchar("method", { length: 32 }).notNull(),
-  status: varchar("status", { length: 20 }).notNull(),
-  cardBrand: varchar("card_brand", { length: 20 }),
-  cardLast4: varchar("card_last4", { length: 4 }),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+    .defaultNow(),
 });
 
-export const contactMessages = pgTable("contact_messages", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 120 }).notNull(),
-  email: varchar("email", { length: 180 }).notNull(),
-  subject: varchar("subject", { length: 200 }).notNull(),
-  message: text("message").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+/* ------------------------------- Advertising ------------------------------ */
 
-export const iecSnapshots = pgTable("iec_snapshots", {
-  id: serial("id").primaryKey(),
-  source: varchar("source", { length: 40 }).notNull(),
-  eventName: varchar("event_name", { length: 200 }).notNull(),
-  payload: text("payload").notNull(),
-  fetchedAt: timestamp("fetched_at", { withTimezone: true }).notNull().defaultNow(),
-});
+export type AdPlacement =
+  | "header-leaderboard"
+  | "in-article"
+  | "sidebar-rectangle"
+  | "sidebar-skyscraper"
+  | "footer-banner"
+  | "mobile-sticky"
+  | "section-rail";
 
-export const iecUpdates = pgTable("iec_updates", {
+export const ads = pgTable("ads", {
   id: serial("id").primaryKey(),
-  headline: varchar("headline", { length: 280 }).notNull(),
-  detail: text("detail").notNull(),
-  eventName: varchar("event_name", { length: 200 }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const weatherForecasts = pgTable("weather_forecasts", {
-  id: serial("id").primaryKey(),
-  citySlug: varchar("city_slug", { length: 80 }).notNull().unique(),
-  city: varchar("city", { length: 120 }).notNull(),
-  province: varchar("province", { length: 80 }).notNull(),
-  payload: text("payload").notNull(),
-  fetchedAt: timestamp("fetched_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const lottoSnapshots = pgTable("lotto_snapshots", {
-  id: serial("id").primaryKey(),
-  payload: text("payload").notNull(),
-  fingerprint: varchar("fingerprint", { length: 240 }).notNull(),
-  fetchedAt: timestamp("fetched_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const lottoUpdates = pgTable("lotto_updates", {
-  id: serial("id").primaryKey(),
-  headline: varchar("headline", { length: 280 }).notNull(),
-  detail: text("detail").notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const advertisements = pgTable("advertisements", {
-  id: serial("id").primaryKey(),
-  slug: varchar("slug", { length: 80 }).notNull().unique(),
-  advertiser: varchar("advertiser", { length: 160 }).notNull(),
-  headline: varchar("headline", { length: 180 }).notNull(),
-  tagline: text("tagline").notNull(),
-  cta: varchar("cta", { length: 80 }).notNull(),
-  href: varchar("href", { length: 240 }).notNull(),
-  slot: varchar("slot", { length: 60 }).notNull(),
-  format: varchar("format", { length: 40 }).notNull(),
-  theme: varchar("theme", { length: 40 }).notNull(),
-  active: boolean("active").notNull().default(true),
+  name: text("name").notNull(),
+  placement: text("placement").$type<AdPlacement>().notNull(),
+  // 'image' banner with optional destination, or 'html' house ad.
+  type: text("type").notNull().default("image"),
+  imageUrl: text("image_url"),
+  html: text("html"),
+  linkUrl: text("link_url"),
+  sponsor: text("sponsor"),
+  // Rotation weight (higher = shown more often). 0 pauses the banner.
+  weight: integer("weight").notNull().default(1),
   impressions: integer("impressions").notNull().default(0),
   clicks: integer("clicks").notNull().default(0),
-  cpmCents: integer("cpm_cents").notNull().default(8500),
-});
-
-export const pageViews = pgTable("page_views", {
-  id: serial("id").primaryKey(),
-  path: varchar("path", { length: 320 }).notNull(),
-  referrer: varchar("referrer", { length: 320 }).notNull().default(""),
-  device: varchar("device", { length: 20 }).notNull().default("desktop"),
-  session: varchar("session", { length: 64 }).notNull(),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const polls = pgTable("polls", {
-  id: serial("id").primaryKey(),
-  question: varchar("question", { length: 280 }).notNull(),
-  slug: varchar("slug", { length: 120 }).notNull().unique(),
+  // Optional scheduling window.
+  startsAt: timestamp("starts_at", { withTimezone: true }),
+  endsAt: timestamp("ends_at", { withTimezone: true }),
   active: boolean("active").notNull().default(true),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
-
-export const pollOptions = pgTable("poll_options", {
-  id: serial("id").primaryKey(),
-  pollId: integer("poll_id")
+  createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
-    .references(() => polls.id),
-  label: varchar("label", { length: 160 }).notNull(),
-  votes: integer("votes").notNull().default(0),
+    .defaultNow(),
 });
 
-export const quizScores = pgTable("quiz_scores", {
+/* ---------------------------------- Media --------------------------------- */
+
+export const mediaItems = pgTable("media_items", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 80 }).notNull().default("Reader"),
-  score: integer("score").notNull(),
-  total: integer("total").notNull().default(5),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  // Stable id: `yt:VIDEOID` for YouTube, podcast GUID/url for audio.
+  guid: text("guid").notNull().unique(),
+  // video = YouTube, audio = podcast / clip
+  kind: text("kind").notNull(), // 'video' | 'audio'
+  title: text("title").notNull(),
+  summary: text("summary"),
+  youtubeId: text("youtube_id"),
+  audioUrl: text("audio_url"),
+  durationSec: integer("duration_sec"),
+  thumbnail: text("thumbnail"),
+  // Channel or podcast show name
+  source: text("source").notNull(),
+  sourceUrl: text("source_url"),
+  // Section slug the item belongs to (national, business, world…)
+  category: text("category").notNull().default("national"),
+  views: integer("views").notNull().default(0),
+  featured: boolean("featured").notNull().default(false),
+  publishedAt: timestamp("published_at", { withTimezone: true }).notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
 });
 
-export const webVitals = pgTable("web_vitals", {
+export type LottoDivision = {
+  match: string;
+  winners: number;
+  prize: number;
+};
+
+export const lottoDraws = pgTable("lotto_draws", {
   id: serial("id").primaryKey(),
-  name: varchar("name", { length: 16 }).notNull(),
-  value: integer("value").notNull(),
-  path: varchar("path", { length: 320 }).notNull(),
-  device: varchar("device", { length: 20 }).notNull().default("desktop"),
-  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
-});
+  // lotto | lotto-plus-1 | lotto-plus-2 | powerball | powerball-plus | daily-lotto
+  game: text("game").notNull(),
+  drawNumber: integer("draw_number").notNull(),
+  drawDate: timestamp("draw_date", { withTimezone: true }).notNull(),
+  mainNumbers: integer("main_numbers")
+    .array()
+    .notNull()
+    .default(sql`'{}'::integer[]`),
+  // Bonus ball (Lotto family) or PowerBall (PowerBall family)
+  bonusNumber: integer("bonus_number"),
+  // Next-draw estimated jackpot, in rands
+  jackpot: numeric("jackpot", { precision: 18, scale: 2 }),
+  // Total prize pool of this draw, in rands
+  prizePool: numeric("prize_pool", { precision: 18, scale: 2 }),
+  totalWinners: integer("total_winners"),
+  divisions: jsonb("divisions")
+    .$type<LottoDivision[]>()
+    .notNull()
+    .default(sql`'[]'::jsonb`),
+  drawMachine: text("draw_machine"),
+  source: text("source").notNull().default("lotteryresults.co.za"),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+}, (table) => [
+  unique("lotto_game_draw_uq").on(table.game, table.drawNumber),
+]);
 
-export const authorsRelations = relations(authors, ({ many }) => ({
-  articles: many(articles),
-}));
-
-export const categoriesRelations = relations(categories, ({ many }) => ({
-  articles: many(articles),
-}));
-
-export const provincesRelations = relations(provinces, ({ many }) => ({
-  articles: many(articles),
-}));
-
-export const articlesRelations = relations(articles, ({ one, many }) => ({
-  author: one(authors, {
-    fields: [articles.authorId],
-    references: [authors.id],
-  }),
-  category: one(categories, {
-    fields: [articles.categoryId],
-    references: [categories.id],
-  }),
-  province: one(provinces, {
-    fields: [articles.provinceId],
-    references: [provinces.id],
-  }),
-  comments: many(comments),
-  media: many(articleMedia),
-}));
-
-export const articleMediaRelations = relations(articleMedia, ({ one }) => ({
-  article: one(articles, {
-    fields: [articleMedia.articleId],
-    references: [articles.id],
-  }),
-}));
-
-export const commentsRelations = relations(comments, ({ one }) => ({
-  article: one(articles, {
-    fields: [comments.articleId],
-    references: [articles.id],
-  }),
-}));
-
-export type Author = typeof authors.$inferSelect;
-export type Category = typeof categories.$inferSelect;
-export type Province = typeof provinces.$inferSelect;
 export type Article = typeof articles.$inferSelect;
-export type Comment = typeof comments.$inferSelect;
-export type ArticleMedia = typeof articleMedia.$inferSelect;
-export type IecUpdate = typeof iecUpdates.$inferSelect;
-export type Advertisement = typeof advertisements.$inferSelect;
-export type LottoUpdate = typeof lottoUpdates.$inferSelect;
+export type NewArticle = typeof articles.$inferInsert;
+export type RssSource = typeof rssSources.$inferSelect;
 export type Subscriber = typeof subscribers.$inferSelect;
+export type LottoDraw = typeof lottoDraws.$inferSelect;
+export type NewLottoDraw = typeof lottoDraws.$inferInsert;
+export type MediaItem = typeof mediaItems.$inferSelect;
 export type Subscription = typeof subscriptions.$inferSelect;
-export type Payment = typeof payments.$inferSelect;
-export type Admin = typeof admins.$inferSelect;
+export type Ad = typeof ads.$inferSelect;

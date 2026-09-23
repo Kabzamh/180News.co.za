@@ -1,214 +1,138 @@
-import { eq, sql } from "drizzle-orm";
+import { and, asc, desc, eq, sql } from "drizzle-orm";
 import { db } from "@/db";
-import { advertisements, type Advertisement } from "@/db/schema";
+import { ads, type Ad, type AdPlacement } from "@/db/schema";
 
-const AD_SEED = [
+export const PLACEMENTS: {
+  id: AdPlacement;
+  name: string;
+  width: number;
+  height: number;
+  description: string;
+}[] = [
   {
-    slug: "sandton-gate-leaderboard",
-    advertiser: "Sandton Gate",
-    headline: "Offices that face both ways",
-    tagline: "Premium suites on Alice Lane, a short walk from the 180° newsroom.",
-    cta: "Book a viewing",
-    href: "/advertise",
-    slot: "top-leaderboard",
-    format: "leaderboard",
-    theme: "navy",
-    cpmCents: 12500,
+    id: "header-leaderboard",
+    name: "Header leaderboard",
+    width: 728,
+    height: 90,
+    description: "Top of every page (320×50 on mobile).",
   },
   {
-    slug: "gautrain-mid",
-    advertiser: "Gautrain",
-    headline: "Sandton to Pretoria before the first briefing",
-    tagline: "Peak trains are filling. Plan the working day on the rail spine.",
-    cta: "Check times",
-    href: "/article/gautrain-ridership-sandton-rosebank",
-    slot: "mid-leaderboard",
-    format: "leaderboard",
-    theme: "gold",
-    cpmCents: 11000,
+    id: "in-article",
+    name: "In-article banner",
+    width: 728,
+    height: 90,
+    description: "Inside long reads after the opening paragraphs.",
   },
   {
-    slug: "bulletin-house-home",
-    advertiser: "180° Bulletin",
-    headline: "The newsroom in your inbox",
-    tagline: "National, provincial and international headlines, compiled in Johannesburg.",
-    cta: "Subscribe free",
-    href: "/#bulletin",
-    slot: "home-sidebar",
-    format: "rectangle",
-    theme: "red",
-    cpmCents: 7800,
+    id: "sidebar-rectangle",
+    name: "Sidebar rectangle",
+    width: 300,
+    height: 250,
+    description: "Right rail, mixed between widgets.",
   },
   {
-    slug: "kruger-article-sidebar",
-    advertiser: "Mpumalanga Tourism",
-    headline: "Kruger this weekend",
-    tagline: "Camps are filling. A 180° turn from the M1 to the bushveld.",
-    cta: "See the story",
-    href: "/article/kruger-tourism-rebound-mpumalanga",
-    slot: "article-sidebar",
-    format: "rectangle",
-    theme: "green",
-    cpmCents: 8200,
+    id: "sidebar-skyscraper",
+    name: "Sidebar skyscraper",
+    width: 300,
+    height: 600,
+    description: "Tall right-rail banner.",
   },
   {
-    slug: "solar-article-inline",
-    advertiser: "Northern Cape Solar",
-    headline: "Power the corridor",
-    tagline: "Independent producers are reaching financial close in the Northern Cape.",
-    cta: "Read the file",
-    href: "/article/northern-cape-solar-corridor-producers",
-    slot: "article-inline",
-    format: "billboard",
-    theme: "sand",
-    cpmCents: 14000,
+    id: "footer-banner",
+    name: "Footer banner",
+    width: 728,
+    height: 90,
+    description: "Above the site footer.",
   },
   {
-    slug: "advertise-footer",
-    advertiser: "180 Degrees News",
-    headline: "Put your brand on the bulletin",
-    tagline: "Leaderboards, sidebars and election-night takeovers. Johannesburg rates, national reach.",
-    cta: "Advertise with us",
-    href: "/advertise",
-    slot: "footer-billboard",
-    format: "billboard",
-    theme: "navy",
-    cpmCents: 9800,
+    id: "mobile-sticky",
+    name: "Mobile sticky",
+    width: 320,
+    height: 50,
+    description: "Fixed to the bottom on phones.",
   },
   {
-    slug: "weather-umbrella",
-    advertiser: "SA Weather Desk",
-    headline: "Don't get caught on the Highveld",
-    tagline: "City forecasts for 34 centres, updated through the day.",
-    cta: "Open weather",
-    href: "/weather",
-    slot: "weather-leaderboard",
-    format: "leaderboard",
-    theme: "blue",
-    cpmCents: 7200,
-  },
-  {
-    slug: "elections-roc",
-    advertiser: "Results Operations",
-    headline: "Sponsored: stay on the IEC desk",
-    tagline: "Live by-election figures, certified 2024 results and the running wire.",
-    cta: "Watch live",
-    href: "/elections",
-    slot: "elections-sidebar",
-    format: "rectangle",
-    theme: "red",
-    cpmCents: 9500,
-  },
-  {
-    slug: "category-leaderboard",
-    advertiser: "JSE Markets Brief",
-    headline: "The rand, explained before open",
-    tagline: "A daily markets note for readers who start in Sandton.",
-    cta: "Business desk",
-    href: "/category/business",
-    slot: "category-leaderboard",
-    format: "leaderboard",
-    theme: "gold",
-    cpmCents: 10500,
-  },
-  {
-    slug: "sticky-house",
-    advertiser: "180 Degrees News",
-    headline: "Advertise on 180news.co.za",
-    tagline: "Reach readers in every province.",
-    cta: "Get rates",
-    href: "/advertise",
-    slot: "sticky-mobile",
-    format: "leaderboard",
-    theme: "navy",
-    cpmCents: 15000,
-  },
-  {
-    slug: "search-promo",
-    advertiser: "180° Archive",
-    headline: "Find every angle",
-    tagline: "Search national, provincial and international copy from the Joburg desk.",
-    cta: "Search the bulletin",
-    href: "/search",
-    slot: "search-leaderboard",
-    format: "leaderboard",
-    theme: "blue",
-    cpmCents: 6800,
-  },
-  {
-    slug: "home-native",
-    advertiser: "City of Johannesburg",
-    headline: "Report a pothole. Track the 90-day blitz.",
-    tagline: "A public-service notice from the metro our newsroom covers every day.",
-    cta: "Read the plan",
-    href: "/article/city-of-johannesburg-water-pothole-plan",
-    slot: "home-native",
-    format: "native",
-    theme: "sand",
-    cpmCents: 6400,
+    id: "section-rail",
+    name: "Section rail",
+    width: 300,
+    height: 250,
+    description: "At the end of section/province grids.",
   },
 ];
 
-let adsReady = false;
-let adsPromise: Promise<void> | null = null;
-
-async function seedAds() {
-  const existing = await db
-    .select({ id: advertisements.id, slug: advertisements.slug, cpmCents: advertisements.cpmCents })
-    .from(advertisements);
-  if (existing.length === 0) {
-    await db.insert(advertisements).values(AD_SEED);
-    adsReady = true;
-    return;
-  }
-  for (const seed of AD_SEED) {
-    const row = existing.find((item) => item.slug === seed.slug);
-    if (row && row.cpmCents === 8500 && seed.cpmCents !== 8500) {
-      await db.update(advertisements).set({ cpmCents: seed.cpmCents }).where(eq(advertisements.slug, seed.slug));
-    }
-  }
-  adsReady = true;
+export function placementMeta(id: AdPlacement) {
+  return PLACEMENTS.find((p) => p.id === id);
 }
 
-export async function ensureAds() {
-  if (adsReady) return;
-  if (!adsPromise) {
-    adsPromise = seedAds().catch((error) => {
-      adsPromise = null;
-      throw error;
-    });
-  }
-  await adsPromise;
+function isLiveNow(a: Ad): boolean {
+  const now = Date.now();
+  if (!a.active) return false;
+  if (a.startsAt && new Date(a.startsAt).getTime() > now) return false;
+  if (a.endsAt && new Date(a.endsAt).getTime() < now) return false;
+  return true;
 }
 
-export async function getAdForSlot(slot: string) {
-  await ensureAds();
+/**
+ * Weighted-random pick of one live banner for the placement (deterministic per
+ * request seed so SSR and hydration agree). Returns null when there are none.
+ */
+export async function getAdForPlacement(
+  placement: AdPlacement,
+  seed = Math.random(),
+): Promise<Ad | null> {
   const rows = await db
     .select()
-    .from(advertisements)
-    .where(eq(advertisements.slot, slot));
-  const active = rows.filter((row) => row.active);
-  if (active.length === 0) return null;
-  const ad = active.reduce((lowest, row) => (row.impressions <= lowest.impressions ? row : lowest));
-  await db
-    .update(advertisements)
-    .set({ impressions: sql`${advertisements.impressions} + 1` })
-    .where(eq(advertisements.id, ad.id));
-  return { ...ad, impressions: ad.impressions + 1 };
+    .from(ads)
+    .where(
+      and(
+        eq(ads.placement, placement),
+        eq(ads.active, true),
+        sql`(${ads.startsAt} IS NULL OR ${ads.startsAt} <= now())`,
+        sql`(${ads.endsAt} IS NULL OR ${ads.endsAt} >= now())`,
+      ),
+    );
+
+  const live = rows.filter(isLiveNow);
+  if (live.length === 0) return null;
+
+  const totalWeight = live.reduce((acc, a) => acc + Math.max(0, a.weight), 0);
+  if (totalWeight <= 0) return null;
+  let r = seed * totalWeight;
+  for (const ad of live) {
+    r -= Math.max(0, ad.weight);
+    if (r <= 0) return ad;
+  }
+  return live[live.length - 1];
 }
 
-export async function getAllAds() {
-  await ensureAds();
-  return db.select().from(advertisements);
+export async function getAllAds(): Promise<Ad[]> {
+  return db.select().from(ads).orderBy(desc(ads.createdAt));
 }
 
-export async function recordAdClick(id: number): Promise<Advertisement | null> {
-  await ensureAds();
-  const [ad] = await db.select().from(advertisements).where(eq(advertisements.id, id)).limit(1);
-  if (!ad) return null;
+export async function getActiveAdsByPlacement(): Promise<
+  Record<string, Ad[]>
+> {
+  const rows = await getAllAds();
+  return rows.reduce<Record<string, Ad[]>>((acc, a) => {
+    (acc[a.placement] ??= []).push(a);
+    return acc;
+  }, {});
+}
+
+export async function recordImpression(id: number): Promise<void> {
   await db
-    .update(advertisements)
-    .set({ clicks: sql`${advertisements.clicks} + 1` })
-    .where(eq(advertisements.id, id));
-  return ad;
+    .update(ads)
+    .set({ impressions: sql`${ads.impressions} + 1` })
+    .where(eq(ads.id, id));
+}
+
+export async function recordClick(id: number): Promise<void> {
+  await db
+    .update(ads)
+    .set({ clicks: sql`${ads.clicks} + 1` })
+    .where(eq(ads.id, id));
+}
+
+export async function listAdminAds(): Promise<Ad[]> {
+  return db.select().from(ads).orderBy(asc(ads.placement));
 }
